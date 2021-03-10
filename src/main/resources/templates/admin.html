@@ -30,13 +30,6 @@
         <th>Delete</th>
         </thead>
         <tbody>
-        <tr>
-            <td scope="row">3</td>
-            <td>What is my name?</td>
-            <td>20-20-20</td>
-            <td>DeadInside, DeadInside, DeadInside</td>
-            <td><button class="btn btn-primary">Delete</button></td>
-        </tr>
 
         <tr th:each="poll : ${polls}">
             <td th:text="${poll.id}"></td>
@@ -65,12 +58,6 @@
         <th></th>
         </thead>
         <tbody>
-        <tr>
-            <td scope="row">3</td>
-            <td>What is my name?</td>
-            <td>DeadInside, DeadInside, DeadInside</td>
-            <td><button class="btn btn-primary">Delete</button></td>
-        </tr>
 
         <tr th:each="option : ${options}">
             <td th:text="${option.id}"></td>
@@ -82,13 +69,28 @@
         </tbody>
     </table>
 </div>
-
-<div class="container d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid d-flex flex-column align-items-center mt-5">
+<div  class="container-fluid d-flex flex-column align-items-center mt-5">
     <div class="poll">
         <div class="poll-header"><h1>New Poll</h1></div>
         <form class="poll-form" id="poll-form" th:method="post" th:object="${dtoPoll}" th:action="@{/admin/poll/add}">
             <input type="text" class="poll-input" placeholder="Question" th:field="*{pollName}">
-            <input type="date" class="poll-input" placeholder="Expiration Date" th:field="*{expirationDate}" th:attr="max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+            <input class="poll-input" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}" th:field="*{expirationDate}"
+                   type="datetime-local">
+            <div class="poll-input">
+                <th:block th:each="interest: ${interests} ">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input"
+                           name="questionInterests"
+                           type="checkbox"
+                           th:id="'inlineCheckbox1'+${interest.id}"
+                           th:field="*{interests}"
+                           th:value="${interest.id}">
+                    <label class="form-check-label" th:text="${interest.name}" th:for="'inlineCheckbox1'+${interest.id}"></label>
+                </div>
+                </th:block>
+            </div>
+
             <input type="text" class="poll-input" placeholder="Option 1" th:field="*{option1}">
             <input type="text" class="poll-input" placeholder="Option 2" th:field="*{option2}">
             <div class="poll-footer">
@@ -96,6 +98,7 @@
             </div>
         </form>
     </div>
+</div>
 </div>
 
 </body>

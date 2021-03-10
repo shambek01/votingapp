@@ -64,20 +64,18 @@ public class ProfileController {
         Long interestId = 0L;
         model.addAttribute("interestId", interestId);
         model.addAttribute("interests", interestService.getAllProfileUpdate(profile));
-        model.addAttribute("profileForm", profile);
+        model.addAttribute("profileForm", new Profile());
         model.addAttribute("userInterests", profile.getInterests());
         model.addAttribute("groups", groupService.getAll());
-        model.addAttribute("profile", profileDetailsService.getByUsername(authentication.getName()));
+        model.addAttribute("profile", profile);
         return "account_edit";
     }
 
 
     @PostMapping("/update")
     public String updateProfile(@ModelAttribute Profile profile){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Profile profileDb = profileDetailsService.getByUsername(authentication.getName());
-        profileDetailsService.update(profile ,profileDb);
-        return "redirect:/profile";
+        profileDetailsService.update(profile);
+        return "redirect:/logout";
     }
 
 

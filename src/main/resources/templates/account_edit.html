@@ -47,21 +47,21 @@
         <h1 class="mb-5">Profile Update</h1>
         <form class="form" th:method="post" th:action="@{/profile/update}" th:object="${profileForm}">
             <div class="form-outline mb-4">
-                <input class="form-control" type="text" placeholder="Username" name="username" th:field="*{username}">
+                <input class="form-control" type="text" placeholder="Username" th:field="*{username}">
             </div>
             <div class="form-outline mb-4">
-                <input class="form-control" type="text" placeholder="Firstname" th:field="*{firstname}">
+                <input class="form-control" type="text"  placeholder="Firstname" th:field="*{firstname}">
             </div>
 
-            <div class="form-outline mb-4"> <input class="form-control" type="text" placeholder="Lastname" th:field="*{lastname}"></div>
+            <div class="form-outline mb-4"> <input class="form-control"  type="text" placeholder="Lastname" th:field="*{lastname}"></div>
 
-            <div class="form-outline mb-4"> <input class="form-control" type="date" placeholder="Your Birthdate" th:field="*{birthDate}" min="1920-01-01" th:attr="max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"></div>
+            <div class="form-outline mb-4"> <input class="form-control" type="date"  placeholder="Your Birthdate" th:field="*{birthDate}" min="1920-01-01" th:attr="max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"></div>
 
 
             <div class="form-outline mb-4">
                 <select class="form-control" th:field="*{group.id}">
-                    <th:block th:each="group : ${groups}">
-                        <option th:value="${group.id}" th:text="${group.name}"></option>
+                    <th:block th:each="groupster : ${groups}">
+                        <option th:value="${groupster.id}" th:text="${groupster.name}"></option>
                     </th:block>
                 </select>
             </div>
@@ -87,8 +87,8 @@
             <h1 class="mb-5">Interest Update</h1>
             <div class="container d-flex flex-column align-items-center mb-4">
                 <h1 class="text-center display-6 mb-3">Interests</h1>
-                <ul class="list-group list-group-horizontal" th:each = "interest : ${userInterests}">
-                    <li class="list-group-item" th:text="${interest.name}"></li>
+                <ul class="list-group list-group-horizontal" th:each = "userInterest : ${userInterests}">
+                    <li class="list-group-item" th:text="${userInterest.name}"></li>
                 </ul>
             </div>
 

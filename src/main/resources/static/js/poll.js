@@ -6,7 +6,6 @@ function onRadioClick(element){
             els.childNodes[i].style.backgroundColor = "#4d648d";
     }
     element.parentElement.style.backgroundColor="lightgreen";
-    element.parentElement.style.color="#1e1f26";
 
 }
 
@@ -18,11 +17,11 @@ function addNew(){
         input.type = "text";
         input.className = "poll-input"
         input.placeholder = "Option " + counter;
-        input.name="question"+ counter;
+        input.name="option"+ counter;
         var elements = document.getElementsByClassName("poll-footer")
         form.insertBefore(input,elements[0])
         counter++;
     }else{
-        alert("Sorry, Bitch, Max Question Size is 6");
+        alert("Sorry, Max Option Number is 6");
     }
 }

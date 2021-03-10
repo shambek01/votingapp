@@ -4,25 +4,31 @@ package com.thirdparty.votingapp.internal.service;
 import com.thirdparty.votingapp.internal.dto.PollDto;
 import com.thirdparty.votingapp.internal.repository.OptionRepository;
 import com.thirdparty.votingapp.internal.repository.PollRepository;
+import com.thirdparty.votingapp.internal.repository.model.Interest;
 import com.thirdparty.votingapp.internal.repository.model.Option;
 import com.thirdparty.votingapp.internal.repository.model.Poll;
+import com.thirdparty.votingapp.internal.repository.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class PollService {
     private PollRepository pollRepository;
     private OptionRepository optionRepository;
+    private ProfileDetailsService profileDetailsService;
 
     @Autowired
-    public PollService(PollRepository pollRepository,OptionRepository optionRepository){
+    public PollService(PollRepository pollRepository,OptionRepository optionRepository, ProfileDetailsService profileDetailsService){
         this.pollRepository = pollRepository;
         this.optionRepository = optionRepository;
+        this.profileDetailsService = profileDetailsService;
     }
 
 
@@ -38,7 +44,14 @@ public class PollService {
     public void create(PollDto pollDto) {
         Poll poll = new Poll();
         poll.setName(pollDto.getPollName());
-        poll.setExpirationDate(pollDto.getExpirationDate());
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date date = formatter.parse(pollDto.getExpirationDate());
+            poll.setExpirationDate(date);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
 
         ArrayList<Poll> polls = (ArrayList<Poll>) pollRepository.findAll();
         polls.sort((o1, o2) -> o1.getId()<o2.getId()?1:0);
@@ -85,10 +98,115 @@ public class PollService {
 
             options.add(option);
         }
+        if(!pollDto.getInterests().isEmpty()){
         if (!options.isEmpty()) {
-            poll.setOptions(options);
-            pollRepository.save(poll);
+            poll.setInterests(pollDto.getInterests());
         }
+        }
+
+
+        poll.setOptions(options);
+        pollRepository.save(poll);
+    }
+
+
+
+    public List<Poll> getAnsweredPolls(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Profile profile = profileDetailsService.getByUsername(authentication.getName());
+
+
+        if(profile.getOptions()!=null) {
+            Set<Option> profileOptions = profile.getOptions();
+            List<Poll> finalPolls = new ArrayList<>();
+
+            for (Option option : profileOptions) {
+                finalPolls.add(option.getPoll());
+            }
+
+            return finalPolls;
+        }
+
+
+        return new ArrayList<Poll>();
+
+    }
+
+
+    public List<Poll> getActivePolls() {
+        List<Poll> polls = getAllByInterest();
+
+        List<Poll> finalPolls = new ArrayList<>();
+
+        List<Poll> answeredPolls = getAnsweredPolls();
+
+        for (Poll poll : getExpiredPolls()) {
+            for (Poll dbpoll : polls) {
+                if (dbpoll.getId() != poll.getId()) {
+                    finalPolls.add(dbpoll);
+                }
+            }
+        }
+
+
+        for (Poll poll : answeredPolls) {
+            for (Poll dbpoll : polls) {
+                if (dbpoll.getId() == poll.getId()) {
+                    finalPolls.remove(dbpoll);
+                }
+            }
+        }
+        LinkedHashSet<Poll> pollDelete = new LinkedHashSet<>(finalPolls);
+
+        System.out.println(pollDelete);
+
+        return new ArrayList<Poll>(pollDelete);
+
+    }
+
+    public List<Poll> getExpiredPolls(){
+        List<Poll> polls = getAllByInterest();
+        List<Poll> finalPolls  = new ArrayList<>();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        formatter.format(date);
+
+        System.out.println(date);
+        for(Poll poll : polls){
+            if(date.after(poll.getExpirationDate())){
+                finalPolls.add(poll);
+                System.out.println(poll.getExpirationDate());
+            }
+        }
+        return finalPolls;
+
+
+    }
+
+
+    public List<Poll> getAllByInterest(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Profile profile = profileDetailsService.getByUsername(authentication.getName());
+        Set<Interest> profileInterests = profile.getInterests();
+        List<Poll> polls = pollRepository.findAll();
+        List<Poll> finalPolls = new ArrayList<>();
+        for(Poll poll : polls){
+            for(Interest pollInterest : poll.getInterests()){
+                for(Interest profileInterest : profileInterests){
+                    if(pollInterest.getId()==profileInterest.getId()){
+                        finalPolls.add(poll);
+                    }
+                }
+            }
+        }
+        LinkedHashSet<Poll> pollDelete = new LinkedHashSet<>(finalPolls);
+
+        System.out.println(pollDelete);
+
+        return new ArrayList<Poll>(pollDelete);
+
+
     }
 
 

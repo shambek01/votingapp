@@ -23,6 +23,17 @@ public class Option {
     private Set<Profile> profiles;
 
 
+    @Transient
+    private int counter;
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
     public Poll getPoll() {
         return poll;
     }

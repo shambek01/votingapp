@@ -60,17 +60,13 @@
         <h1 sec:authorize="isAuthenticated()"  class="display-5">Based on your interests</h1>
         <div sec:authorize="isAuthenticated()" class="container-fluid d-flex flex-column align-items-center mt-5">
 
-                <div class="poll" th:each="poll: ${polls}">
+                <div class="poll" th:each="poll: ${activePolls}">
                     <div class="poll-header">
                         <h3 th:text="${poll.name}"></h3>
-                        <p>1000 people</p>
                     </div>
-                    <div class="poll-header">
-                        <p>21.22.22:50:56 pm</p>
-                    </div>
-                    <form class="poll-form">
+                    <form class="poll-form" th:action="@{/option/vote}">
                         <div class="poll-div" th:each="option : ${poll.options}">
-                            <input type="radio" th:value="${option.id}" th:id="${option.id}" th:name="radioInputId" class="poll-radio" onclick="onRadioClick(this)">
+                            <input type="radio" th:value="${option.id}" th:id="${option.id}" th:name="voteId" class="poll-radio" onclick="onRadioClick(this)">
                             <label class="poll-label" th:for="${option.id}" th:text="${option.name}"></label>
                         </div>
 
@@ -80,6 +76,68 @@
 
 
         </div>
+
+
+    <h1 sec:authorize="isAuthenticated()"  class="display-5">Answered polls</h1>
+
+    <div sec:authorize="isAuthenticated()" class="container-fluid d-flex flex-column align-items-center mt-5">
+
+
+
+        <div class="answered-poll" th:each="answeredPoll: ${answeredPolls}">
+            <div class="poll-header">
+                <h3 th:text="${answeredPoll.name}"></h3>
+            </div>
+            <div class="poll-form">
+                <div class="answered-poll-div active-poll-div" th:each="answeredOption : ${answeredPoll.options}">
+                    <a th:text="${answeredOption.name}">Hello</a>
+                    <a th:if="${answeredOption.counter > 0}"
+                       th:text="${#numbers.formatDecimal((answeredOption.getProfiles().size()*100/answeredOption.counter), 1, 'POINT', 2, 'COMMA')}+'%'"></a>
+
+                    <a th:if="${answeredOption.counter == 0}"
+                       th:text="'0.00%'"></a>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <h1 sec:authorize="isAuthenticated()"  class="display-5">Expired Polls</h1>
+
+    <div sec:authorize="isAuthenticated()" class="container-fluid d-flex flex-column align-items-center mt-5">
+
+
+
+        <div class="outdated-poll" th:each="expiredPoll : ${expiredPolls}">
+            <div class="poll-header">
+                <h3 th:text="${expiredPoll.name}"></h3>
+            </div>
+            <div class="poll-form">
+                <div class="outdated-poll-div active-poll-div" th:each="expiredOption : ${expiredPoll.options}">
+                    <a th:text="${expiredOption.name}"></a>
+                    <a th:if="${expiredOption.counter > 0}"
+                       th:text="${#numbers.formatDecimal((expiredOption.getProfiles().size()*100/expiredOption.counter), 1, 'POINT', 2, 'COMMA')}+'%'"></a>
+
+                    <a th:if="${expiredOption.counter == 0}"
+                       th:text="'0.00%'"></a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
 </div>
 
 

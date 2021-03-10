@@ -1,5 +1,7 @@
 package com.thirdparty.votingapp.internal.repository.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -21,6 +23,13 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Option> options;
+
+
+
+    @Transient
+    private long userOption;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -72,4 +81,15 @@ public class Poll {
     public void setInterests(Set<Interest> interests) {
         this.interests = interests;
     }
+
+
+    public long getUserOption() {
+        return userOption;
+    }
+
+    public void setUserOption(long userOption) {
+        this.userOption = userOption;
+    }
+
+
 }

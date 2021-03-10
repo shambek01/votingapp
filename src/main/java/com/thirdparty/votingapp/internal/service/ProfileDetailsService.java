@@ -2,9 +2,12 @@ package com.thirdparty.votingapp.internal.service;
 
 import com.thirdparty.votingapp.internal.repository.ProfileRepository;
 import com.thirdparty.votingapp.internal.repository.RoleRepository;
+import com.thirdparty.votingapp.internal.repository.model.Group;
 import com.thirdparty.votingapp.internal.repository.model.Profile;
 import com.thirdparty.votingapp.internal.repository.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,7 +57,10 @@ public class ProfileDetailsService implements UserDetailsService {
     }
 
 
-    public void update(Profile profile, Profile profileDb) {
+    public void update(Profile profile) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Profile profileDb = getByUsername(authentication.getName());
 
         if(profile.getFirstname()!=null){
             profileDb.setFirstname(profile.getFirstname());
@@ -72,9 +78,9 @@ public class ProfileDetailsService implements UserDetailsService {
             profileDb.setGender(profile.getGender());
         }
         if(profile.getGroup()!=null){
+            profileDb.setGroup(new Group());
             profileDb.getGroup().setId(profile.getGroup().getId());
         }
-
         profileRepository.save(profileDb);
 
     }

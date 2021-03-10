@@ -95,7 +95,7 @@
     border-radius: 15px;
     border:none;
     padding:10px;
-    height:20px;
+    height:40px;
 }
 
 
@@ -120,6 +120,44 @@
 }
 
 
-.poll-label{
+
+.outdated-poll{
+    margin-bottom:30px;
+    width:500px;
+    padding:20px 30px;
+    background-color: #dcdcdc;
+    border-radius: 15px;
+}
+
+.outdated-poll-div{
+
     color:white;
+    border-radius:15px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding:10px;
+    background-color: #727272;
+}
+
+
+.answered-poll{
+    margin-bottom:30px;
+    width:500px;
+    padding:20px 30px;
+    background-color:#C1E1C1;
+    border-radius: 15px;
+}
+
+
+.answered-poll-div{
+    color:white;
+    border-radius:15px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding:10px;
+    background-color: #6d816d;
+}
+
+.active-poll-div{
+    background-color: rgb(146, 216, 146);
 }

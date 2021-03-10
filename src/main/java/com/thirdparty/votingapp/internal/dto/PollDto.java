@@ -1,7 +1,9 @@
 package com.thirdparty.votingapp.internal.dto;
 
 
-import java.sql.Date;
+import com.thirdparty.votingapp.internal.repository.model.Interest;
+
+import java.util.Set;
 
 public class PollDto {
     private String pollName;
@@ -11,15 +13,25 @@ public class PollDto {
     private String option4;
     private String option5;
     private String option6;
-    private Date expirationDate;
+    private Set<Interest> interests;
+    private String expirationDate;
 
     public PollDto(){}
 
-    public Date getExpirationDate() {
+
+    public Set<Interest> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(Set<Interest> interests) {
+        this.interests = interests;
+    }
+
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 
