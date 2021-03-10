@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <link href="../static/css/poll.css" th:href="@{/css/poll.css}" rel="stylesheet"  />
+    <script src="../static/js/poll.js" th:src="@{/js/poll.js}"></script>
+</head>
+<body>
+
+
+
+<div class="container-fluid d-flex flex-column align-items-center p-5 bg-light">
+    <h1 class="display-3">Admin Page</h1>
+    <p class="blockquote"> <a style="font-weight:300">By @altercolt</a></p>
+</div>
+
+
+<h1 class="h1 text-center mt-3">Poll Panel</h1>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Expiration Date</th>
+        <th>Interests</th>
+        <th>Delete</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td scope="row">3</td>
+            <td>What is my name?</td>
+            <td>20-20-20</td>
+            <td>DeadInside, DeadInside, DeadInside</td>
+            <td><button class="btn btn-primary">Delete</button></td>
+        </tr>
+
+        <tr th:each="poll : ${polls}">
+            <td th:text="${poll.id}"></td>
+            <td th:text="${poll.name}"></td>
+            <td th:text="${poll.expirationDate}"></td>
+            <td th:text="${poll.interests}"></td>
+            <td><a href="#"><button>Delete</button></a></td>
+
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<h1 class="h1 text-center mt-3">Option Panel</h1>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <th>id</th>
+        <th>Question Name</th>
+        <th>Answer Name</th>
+        <th>Delete</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr>
+            <td scope="row">3</td>
+            <td>What is my name?</td>
+            <td>DeadInside, DeadInside, DeadInside</td>
+            <td><button class="btn btn-primary">Delete</button></td>
+        </tr>
+
+        <tr th:each="option : ${options}">
+            <td th:text="${option.id}"></td>
+            <td th:text="${option.poll.name}"></td>
+            <td th:text="${option.name}"></td>
+            <td><a th:href="@{/option/delete}"><button>Delete</button></a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <div class="poll">
+        <div class="poll-header"><h1>New Poll</h1></div>
+        <form class="poll-form" id="poll-form" th:method="post" th:object="${dtoPoll}" th:action="@{/admin/poll/add}">
+            <input type="text" class="poll-input" placeholder="Question" th:field="*{pollName}">
+            <input type="date" class="poll-input" placeholder="Expiration Date" th:field="*{expirationDate}" th:attr="max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+            <input type="text" class="poll-input" placeholder="Option 1" th:field="*{option1}">
+            <input type="text" class="poll-input" placeholder="Option 2" th:field="*{option2}">
+            <div class="poll-footer">
+                <input type="submit" class="poll-submit" value="Submit"> <button type="button" onclick="addNew()">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+
+
+</html>
