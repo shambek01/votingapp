@@ -6,6 +6,15 @@ import com.thirdparty.votingapp.internal.repository.model.Interest;
 import java.util.Set;
 
 public class PollDto {
+    public Long getPollId() {
+        return pollId;
+    }
+
+    public void setPollId(Long pollId) {
+        this.pollId = pollId;
+    }
+
+    public Long pollId;
     private String pollName;
     private String option1;
     private String option2;

@@ -55,6 +55,11 @@ public class AdminController {
         pollService.create(pollDto);
         return "redirect:/admin";
     }
+    @PostMapping("/poll/update")
+    public String updatePoll(@ModelAttribute PollDto pollDto){
+        pollService.update(pollDto);
+        return "redirect:/admin";
+    }
     @GetMapping("/poll/delete/{id}")
     public String deletePoll(@PathVariable Long id){
         pollService.delete(id);

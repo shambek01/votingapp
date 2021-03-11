@@ -28,6 +28,7 @@
         <th>Expiration Date</th>
         <th>Interests</th>
         <th>Delete</th>
+        <th>Edit</th>
         </thead>
         <tbody>
 
@@ -37,7 +38,7 @@
             <td th:text="${poll.expirationDate}"></td>
             <td th:text="${poll.interests}"></td>
             <td><a th:href="@{/admin/poll/delete/{id}(id=${poll.id})}"><button>Delete</button></a></td>
-
+            <td><a th:href="@{/edit_poll/{id}(id=${poll.id})}"><button>Edit</button></a></td>
 
         </tr>
 
