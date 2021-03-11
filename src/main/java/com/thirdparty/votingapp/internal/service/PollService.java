@@ -30,6 +30,9 @@ public class PollService {
         this.optionRepository = optionRepository;
         this.profileDetailsService = profileDetailsService;
     }
+    public void delete(Long id){
+        pollRepository.delete(pollRepository.getOne(id));
+    }
 
 
 

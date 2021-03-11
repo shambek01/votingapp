@@ -42,6 +42,9 @@ public class OptionService {
     public ArrayList<Option> getOptionsByPollId(long id){
         return (ArrayList<Option>) optionRepository.findAllByPollId(id);
     }
+    public void delete(Long id){
+        optionRepository.delete(optionRepository.getOne(id));
+    }
 
 
 
