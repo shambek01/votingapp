@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Collections;
 
 @Service
@@ -87,5 +89,13 @@ public class ProfileDetailsService implements UserDetailsService {
 
     public void addInterest(Profile profileDb) {
         profileRepository.save(profileDb);
+    }
+
+    public ArrayList<Profile> getAll() {
+        return (ArrayList<Profile>) profileRepository.findAll();
+    }
+
+    public void delete(Long id) {
+        profileRepository.delete(profileRepository.getOne(id));
     }
 }

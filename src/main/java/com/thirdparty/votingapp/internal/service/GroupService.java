@@ -22,6 +22,11 @@ public class GroupService {
     }
 
 
+    public void add(Group group) {
+        groupRepository.save(group);
+    }
 
-
+    public void delete(Long id) {
+        groupRepository.delete(groupRepository.getOne(id));
+    }
 }

@@ -21,7 +21,7 @@ public class Poll {
     @Column(name = "expiration_date")
     private Date expirationDate;
 
-    @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Option> options;
 
 

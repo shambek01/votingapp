@@ -30,6 +30,9 @@ public class PollService {
         this.optionRepository = optionRepository;
         this.profileDetailsService = profileDetailsService;
     }
+    public void delete(Long id){
+        pollRepository.delete(pollRepository.getOne(id));
+    }
 
 
 
@@ -39,11 +42,79 @@ public class PollService {
     }
 
 
+    public void update(PollDto pollDto){
+            Poll poll = new Poll();
+            poll.setName(pollDto.getPollName());
 
+            if(pollDto.getPollId() != null){
+                poll.setId(pollDto.getPollId());
+            }
+            try {
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+                Date date = formatter.parse(pollDto.getExpirationDate());
+                poll.setExpirationDate(date);
+            }catch(ParseException e){
+                e.printStackTrace();
+            }
+
+
+            ArrayList<Poll> polls = (ArrayList<Poll>) pollRepository.findAll();
+            polls.sort((o1, o2) -> o1.getId()<o2.getId()?1:0);
+
+
+
+
+            Set<Option> options = new HashSet<>();
+            if (pollDto.getOption1() != null) {
+                Option option = new Option();
+                option.setPoll(poll);
+                option.setName(pollDto.getOption1());
+                options.add(option);
+            }
+
+            if (pollDto.getOption3() != null) {
+                Option option = new Option();
+                option.setPoll(poll);
+                option.setName(pollDto.getOption3());
+                options.add(option);
+                System.out.println(option.getName());
+            }
+            if (pollDto.getOption4() != null) {
+                Option option = new Option();
+                option.setPoll(poll);
+                option.setName(pollDto.getOption4());
+                options.add(option);
+            }
+            if (pollDto.getOption5() != null) {
+                Option option = new Option();
+                option.setPoll(poll);
+                option.setName(pollDto.getOption5());
+                options.add(option);
+            }
+            if (pollDto.getOption6() != null) {
+                Option option = new Option();
+                option.setPoll(poll);
+                option.setName(pollDto.getOption6());
+
+                options.add(option);
+            }
+            if(!pollDto.getInterests().isEmpty()){
+                if (!options.isEmpty()) {
+                    poll.setInterests(pollDto.getInterests());
+                }
+            }
+
+
+            poll.setOptions(options);
+            pollRepository.save(poll);
+    }
 
     public void create(PollDto pollDto) {
         Poll poll = new Poll();
         poll.setName(pollDto.getPollName());
+        if(pollDto.getPollId() != null){
+            poll.setId(pollDto.getPollId());
+        }
         try {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
             Date date = formatter.parse(pollDto.getExpirationDate());
@@ -210,9 +281,8 @@ public class PollService {
     }
 
 
-
-
-
-
+    public Poll getById(Long id) {
+        return pollRepository.getOne(id);
     }
+}
 

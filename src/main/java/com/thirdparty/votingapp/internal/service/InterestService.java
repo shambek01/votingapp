@@ -49,14 +49,11 @@ public class InterestService {
 
 
     public void add(Interest interest){
-        System.out.println(interest.getId());
-        Optional<Interest> interestOptional = interestRepository.findById(interest.getId());
-        Interest interestDb = interestOptional.get();
-
-        interestDb.setProfiles(interest.getProfiles());
-        interestRepository.save(interestDb);
+        interestRepository.save(interest);
     }
 
 
-
+    public void delete(Long id) {
+        interestRepository.delete(interestRepository.getOne(id));
+    }
 }

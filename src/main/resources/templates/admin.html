@@ -28,6 +28,7 @@
         <th>Expiration Date</th>
         <th>Interests</th>
         <th>Delete</th>
+        <th>Edit</th>
         </thead>
         <tbody>
 
@@ -36,8 +37,8 @@
             <td th:text="${poll.name}"></td>
             <td th:text="${poll.expirationDate}"></td>
             <td th:text="${poll.interests}"></td>
-            <td><a href="#"><button>Delete</button></a></td>
-
+            <td><a th:href="@{/admin/poll/delete/{id}(id=${poll.id})}"><button>Delete</button></a></td>
+            <td><a th:href="@{/edit_poll/{id}(id=${poll.id})}"><button>Edit</button></a></td>
 
         </tr>
 
@@ -63,11 +64,101 @@
             <td th:text="${option.id}"></td>
             <td th:text="${option.poll.name}"></td>
             <td th:text="${option.name}"></td>
-            <td><a th:href="@{/option/delete}"><button>Delete</button></a></td>
+            <td><a th:href="@{admin/option/delete/{optionid}(optionid=${option.id})}"><button>Delete</button></a></td>
         </tr>
 
         </tbody>
     </table>
+</div>
+<div class="container">
+    <h1 class="h1 text-center mt-3">Accounts Panel</h1>
+    <table class="table">
+        <thead>
+        <th>id</th>
+        <th>First Name</th>
+        <th>Surname</th>
+        <th>Gender</th>
+        <th>Username</th>
+        <th>Birth Date</th>
+        <th>Interests</th>
+        <th>Delete</th>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.firstname}"></td>
+            <td th:text="${user.lastname}"></td>
+            <td th:text="${user.gender}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.birthDate}"></td>
+            <td th:text="${user.interests}"></td>
+
+            <td><a th:if="${user.id != currentUser.id}" th:href="@{admin/user/delete/{id}(id=${user.id})}"><button>Delete</button></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <h1 class="h1 text-center mt-3">Group Panel</h1>
+    <table class="table">
+        <thead>
+        <th>id</th>
+        <th>Group name</th>
+        <th>Delete</th>
+        <th></th>
+        </thead>
+        <tbody>
+
+        <tr th:each="group : ${groups}">
+            <td th:text="${group.id}"></td>
+            <td th:text="${group.name}"></td>
+            <td><a th:href="@{admin/group/delete/{id}(id=${group.id})}"><button>Delete</button></a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<div class="container-fluid d-flex flex-column align-items-center mt-5">
+    <div  class="container-fluid d-flex flex-column align-items-center mt-5">
+        <div class="poll">
+            <div class="poll-header"><h1>New Group</h1></div>
+            <form class="poll-form" modelAttribute="groupForm" th:method="post" th:action="@{/admin/group/add}">
+                <input class="poll-input" type="text" name="name" path="name" placeholder="Group name">
+                <input type="submit" class="poll-submit">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+<h1 class="h1 text-center mt-3">Interests Panel</h1>
+    <table class="table">
+        <thead>
+        <th>id</th>
+        <th>Interest name</th>
+        <th>Delete</th>
+        <th></th>
+        </thead>
+        <tbody>
+
+        <tr th:each="interest : ${interests}">
+            <td th:text="${interest.id}"></td>
+            <td th:text="${interest.name}"></td>
+            <td><a th:href="@{admin/interest/delete/{id}(id=${interest.id})}"><button>Delete</button></a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<div class="container-fluid d-flex flex-column align-items-center mt-5">
+    <div  class="container-fluid d-flex flex-column align-items-center mt-5">
+<div class="poll">
+    <div class="poll-header"><h1>New Interest</h1></div>
+    <form class="poll-form" modelAttribute="interestForm" th:method="post" th:action="@{/admin/interest/add}">
+        <input class="poll-input" type="text" name="name" path="name" placeholder="Interest name">
+        <input type="submit" class="poll-submit">
+    </form>
+</div>
+    </div>
 </div>
 <div class="container-fluid d-flex flex-column align-items-center mt-5">
 <div  class="container-fluid d-flex flex-column align-items-center mt-5">
