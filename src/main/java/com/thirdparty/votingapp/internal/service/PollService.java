@@ -213,8 +213,8 @@ public class PollService {
 
         for (Poll poll : getExpiredPolls()) {
             for (Poll dbpoll : polls) {
-                if (dbpoll.getId() != poll.getId()) {
-                    finalPolls.add(dbpoll);
+                if (dbpoll.getId() == poll.getId()) {
+                    finalPolls.remove(dbpoll);
                 }
             }
         }
@@ -280,7 +280,11 @@ public class PollService {
 
     }
 
+    public Poll getPollById(long id){
+        return pollRepository.findById(id).get();
 
+
+    }
     public Poll getById(Long id) {
         return pollRepository.getOne(id);
     }

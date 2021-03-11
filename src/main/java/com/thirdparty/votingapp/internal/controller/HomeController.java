@@ -39,7 +39,7 @@ public class HomeController {
 
             model.addAttribute("answeredPolls", handler(pollService.getAnsweredPolls()));
             model.addAttribute("activePolls", pollService.getActivePolls());
-            model.addAttribute("expiredPolls", handler(pollService.getActivePolls()));
+            model.addAttribute("expiredPolls", handler(pollService.getExpiredPolls()));
         }
         return "home";
     }

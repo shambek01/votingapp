@@ -85,9 +85,10 @@
 
 
         <div class="answered-poll" th:each="answeredPoll: ${answeredPolls}">
-            <div class="poll-header">
+            <a th:href="@{/poll/{id} (id = ${answeredPoll.id})}" style="text-decoration: none; color:black"><div class="poll-header">
                 <h3 th:text="${answeredPoll.name}"></h3>
             </div>
+          </a>
             <div class="poll-form">
                 <div class="answered-poll-div active-poll-div" th:each="answeredOption : ${answeredPoll.options}">
                     <a th:text="${answeredOption.name}">Hello</a>
@@ -114,9 +115,11 @@
 
 
         <div class="outdated-poll" th:each="expiredPoll : ${expiredPolls}">
+            <a th:href="@{/poll/{id} (id = ${expiredPoll.id})}" style="text-decoration: none; color:black">
             <div class="poll-header">
                 <h3 th:text="${expiredPoll.name}"></h3>
             </div>
+            </a>
             <div class="poll-form">
                 <div class="outdated-poll-div active-poll-div" th:each="expiredOption : ${expiredPoll.options}">
                     <a th:text="${expiredOption.name}"></a>
